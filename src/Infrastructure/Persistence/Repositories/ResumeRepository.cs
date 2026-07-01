@@ -17,6 +17,13 @@ public class ResumeRepository : IResumeRepository
         await _dBContext.Resumes.AddAsync(resume);
     }
 
+    public Task DeleteResumeAsync(Resume resume)
+    {
+        _dBContext.Remove(resume);
+
+        return Task.CompletedTask;
+    }
+
     public async Task<Resume?> GetResumeByIdAsync(ResumeId id)
     {
         var result = await _dBContext.Resumes.FirstOrDefaultAsync(r => r.Id == id);
