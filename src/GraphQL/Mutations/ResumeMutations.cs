@@ -1,38 +1,33 @@
+using Application.Common.Errors;
 using Application.Resumes.Commands.CreateResume;
 using Application.Resumes.Commands.DeleteResume;
-using ErrorOr;
+using GraphQL.Common;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GraphQL.Mutations
 {
     [MutationType]
     public static partial class ResumeMutations
     {
-        public static async Task<CreateResumePayload> CreateResumeAsync(CreateResumeCommand input, [Service] ISender sender)
+        [Error<ValidationError>]
+        [Error<NotFoundError>]
+        public static async Task<FieldResult<CreateResumePayload>> CreateResumeAsync(Guid userId, string name, string templateId, [Service] ISender sender)
         {
+            var input = new CreateResumeCommand(userId, name, templateId);
+
             var result = await sender.Send(input);
 
-            return result.MatchFirst(
-                payload => payload,
-                error => throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(error.Description)
-                .SetCode(error.Code)
-                .Build())
-            );
+            return MutationResult.From(result);
         }
 
-        public static async Task<DeleteResumePayload> DeleteResumeAsync(DeleteResumeCommand input, [Service] ISender sender)
+        [Error<NotFoundError>]
+        public static async Task<FieldResult<DeleteResumePayload>> DeleteResumeAsync(Guid id, [Service] ISender sender)
         {
+            var input = new DeleteResumeCommand(id);
+
             var result = await sender.Send(input);
 
-            return result.MatchFirst(
-                payload => payload,
-                error => throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(error.Description)
-                .SetCode(error.Code)
-                .Build())
-            );
+            return MutationResult.From(result);
         }
     }
 }

@@ -3,7 +3,10 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddGraphQL().AddTypes();
+builder.AddGraphQL()
+       .AddTypes()
+       .AddQueryConventions()
+       .AddMutationConventions(applyToAllMutations: true);
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);

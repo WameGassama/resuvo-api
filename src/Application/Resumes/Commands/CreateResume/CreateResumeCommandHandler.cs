@@ -1,5 +1,4 @@
 using Application.Common.Interfaces;
-using Application.Resumes.Commands.CreateResume;
 using Domain;
 using ErrorOr;
 using MediatR;
@@ -30,12 +29,12 @@ namespace Application.Resumes.Commands.CreateResume
             await _resumeRepository.AddResumeAsync(resume);
             await _unitOfWork.CommitChangesAsync();
 
-            return new CreateResumePayload(resume.Id.Value,
+            return new CreateResumePayload(new ResumeDTO(resume.Id.Value,
                                            resume.UserId.Value,
                                            resume.Name,
                                            resume.TemplateId,
                                            resume.CreatedAt,
-                                           resume.UpdatedAt);
+                                           resume.UpdatedAt));
         }
     }
 }
