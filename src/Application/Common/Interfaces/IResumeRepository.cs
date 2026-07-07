@@ -7,6 +7,7 @@ namespace Application.Common.Interfaces
         Task AddResumeAsync(Resume resume);
         Task<Resume?> GetResumeByIdAsync(ResumeId id);
 
+        Task<List<Resume>> GetResumesByUserIdAsync(UserId userId);
         Task DeleteResumeAsync(Resume resume);
     }
 }

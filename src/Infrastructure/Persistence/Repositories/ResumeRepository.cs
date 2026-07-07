@@ -30,4 +30,11 @@ public class ResumeRepository : IResumeRepository
 
         return result;
     }
+
+    public async Task<List<Resume>> GetResumesByUserIdAsync(UserId userId)
+    {
+        var result = await _dBContext.Resumes.Where(r => r.UserId == userId).ToListAsync();
+
+        return result;
+    }
 }

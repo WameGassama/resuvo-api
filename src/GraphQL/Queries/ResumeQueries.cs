@@ -1,6 +1,7 @@
 using Application.Common.Errors;
+using Application.Resumes;
 using Application.Resumes.Queries.GetResume;
-using Domain;
+using Application.Resumes.Queries.GetResumes;
 using ErrorOr;
 using GraphQL.Common;
 using MediatR;
@@ -23,6 +24,15 @@ namespace GraphQL.Queries
                     return new NotFoundError(error.Description);
                 }
             }
+
+            return result.Value;
+        }
+
+        public static async Task<IReadOnlyList<ResumeDTO>> GetResumesAsync(Guid userId, [Service] ISender sender)
+        {
+            var query = new GetResumesQuery(userId);
+
+            var result = await sender.Send(query);
 
             return result.Value;
         }

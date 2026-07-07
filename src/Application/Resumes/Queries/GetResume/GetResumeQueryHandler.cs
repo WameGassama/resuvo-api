@@ -22,7 +22,7 @@ namespace Application.Resumes.Queries.GetResume
 
             return resume is null
                 ? Error.NotFound(code: "RESUME_NOT_FOUND", description: "The resume could not be found.")
-                : new GetResumePayload(resume.Id.Value, resume.UserId.Value, resume.Name, resume.TemplateId, resume.CreatedAt, resume.UpdatedAt);
+                : new GetResumePayload(new ResumeDTO(resume.Id.Value, resume.UserId.Value, resume.Name, resume.TemplateId, resume.CreatedAt, resume.UpdatedAt));
         }
     }
 }
