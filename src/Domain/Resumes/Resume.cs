@@ -1,4 +1,5 @@
 using Domain.Common.Models;
+using Domain.Resumes.ValueObjects;
 
 namespace Domain
 {
@@ -6,14 +7,15 @@ namespace Domain
     {
         public UserId UserId { get; private set; }
         public string Name { get; private set; } = string.Empty;
-        public string TemplateId { get; private set; } = string.Empty;
+        public TemplateId TemplateId { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
+        
         private Resume(
             ResumeId resumeId,
             UserId userId,
             string name,
-            string templateId,
+            TemplateId templateId,
             DateTime createdAt,
             DateTime updatedAt) : base(resumeId)
         {
@@ -26,7 +28,7 @@ namespace Domain
 
         public static Resume Create(UserId userId,
             string name,
-            string templateId,
+            TemplateId templateId,
             DateTime createdAt,
             DateTime updatedAt)
         {
@@ -35,7 +37,7 @@ namespace Domain
 
         private Resume()
         {
-            
+
         }
     }
 }

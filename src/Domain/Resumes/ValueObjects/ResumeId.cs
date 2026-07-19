@@ -1,19 +1,22 @@
-public sealed class ResumeId : ValueObject
+namespace Domain.Resumes.ValueObjects
 {
-    public Guid Value { get; private set; }
-
-    private ResumeId(Guid value)
+    public sealed class ResumeId : ValueObject
     {
-        Value = value;
-    }
+        public Guid Value { get; private set; }
 
-    public static ResumeId CreateUnique() => new(Guid.CreateVersion7());
+        private ResumeId(Guid value)
+        {
+            Value = value;
+        }
 
-    public static ResumeId Create(Guid value) => new(value);
+        public static ResumeId CreateUnique() => new(Guid.CreateVersion7());
+
+        public static ResumeId Create(Guid value) => new(value);
 
 
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
     }
 }

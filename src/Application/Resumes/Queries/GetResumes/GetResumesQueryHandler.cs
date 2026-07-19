@@ -1,10 +1,12 @@
 using Application.Common.Interfaces;
+using Domain;
+using Domain.Resumes.ValueObjects;
 using ErrorOr;
 using MediatR;
 
 namespace Application.Resumes.Queries.GetResumes
 {
-    public class GetResumesQueryHandler : IRequestHandler<GetResumesQuery, ErrorOr<IReadOnlyList<ResumeDTO>>>
+    public class GetResumesQueryHandler : IRequestHandler<GetResumesQuery, ErrorOr<IReadOnlyList<Resume>>>
     {
         private readonly IResumeRepository _resumeRepository;
 
@@ -13,13 +15,11 @@ namespace Application.Resumes.Queries.GetResumes
             _resumeRepository = repository;
         }
 
-        public async Task<ErrorOr<IReadOnlyList<ResumeDTO>>> Handle(GetResumesQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<IReadOnlyList<Resume>>> Handle(GetResumesQuery request, CancellationToken cancellationToken)
         {
             var resumes = await _resumeRepository.GetResumesByUserIdAsync(UserId.Create(request.UserId));
 
-            return resumes
-                .Select(r => new ResumeDTO(r.Id.Value, r.UserId.Value, r.Name, r.TemplateId, r.CreatedAt, r.UpdatedAt))
-                .ToList();
+            return resumes.ToList();
         }
     }
 }

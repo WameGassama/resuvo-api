@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Resumes.ValueObjects;
 
 namespace Application.Common.Interfaces
 {

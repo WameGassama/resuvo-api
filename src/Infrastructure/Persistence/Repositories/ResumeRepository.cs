@@ -1,5 +1,6 @@
 using Application.Common.Interfaces;
 using Domain;
+using Domain.Resumes.ValueObjects;
 using Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
