@@ -1,11 +1,12 @@
 using Application.Common.Interfaces;
 using Domain;
+using Domain.Resumes.ValueObjects;
 using ErrorOr;
 using MediatR;
 
 namespace Application.Resumes.Commands.CreateResume
 {
-    public class CreateResumeCommandHandler : IRequestHandler<CreateResumeCommand, ErrorOr<CreateResumePayload>>
+    public class CreateResumeCommandHandler : IRequestHandler<CreateResumeCommand, ErrorOr<Resume>>
     {
         private readonly IResumeRepository _resumeRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -16,12 +17,12 @@ namespace Application.Resumes.Commands.CreateResume
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ErrorOr<CreateResumePayload>> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<Resume>> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
         {
             var resume = Resume.Create(
                 UserId.Create(request.UserId),
                 request.Name,
-                request.TemplateId,
+                TemplateId.Create(Guid.Parse(request.TemplateId)),
                 DateTime.UtcNow,
                 DateTime.UtcNow
             );
@@ -29,12 +30,7 @@ namespace Application.Resumes.Commands.CreateResume
             await _resumeRepository.AddResumeAsync(resume);
             await _unitOfWork.CommitChangesAsync();
 
-            return new CreateResumePayload(new ResumeDTO(resume.Id.Value,
-                                           resume.UserId.Value,
-                                           resume.Name,
-                                           resume.TemplateId,
-                                           resume.CreatedAt,
-                                           resume.UpdatedAt));
+            return resume;
         }
     }
 }

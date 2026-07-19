@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ResumeDBContext))]
-    partial class ResumeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260707084917_ConvertUserIdToString")]
+    partial class ConvertUserIdToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,8 +40,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<Guid>("TemplateId")
-                        .HasColumnType("uuid")
+                    b.Property<string>("TemplateId")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("template_id");
 
                     b.Property<DateTime>("UpdatedAt")

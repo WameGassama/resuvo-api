@@ -1,15 +1,15 @@
 namespace Domain.Resumes.ValueObjects
 {
-    public sealed class UserId : ValueObject
+    public sealed class TemplateId : ValueObject
     {
-        public string Value { get; private set; }
+        public Guid Value { get; private set; }
 
-        private UserId(string value)
+        private TemplateId(Guid value)
         {
             Value = value;
         }
 
-        public static UserId Create(string value) => new(value);
+        public static TemplateId Create(Guid value) => new(value);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

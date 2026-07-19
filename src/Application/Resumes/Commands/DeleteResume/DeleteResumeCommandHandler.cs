@@ -1,12 +1,13 @@
 using Application.Common.Interfaces;
 using Application.Resumes.Commands.DeleteResume;
 using Domain;
+using Domain.Resumes.ValueObjects;
 using ErrorOr;
 using MediatR;
 
 namespace Application.Resumes.Commands.DeleteResume
 {
-    public class DeleteResumeCommandHandler : IRequestHandler<DeleteResumeCommand, ErrorOr<DeleteResumePayload>>
+    public class DeleteResumeCommandHandler : IRequestHandler<DeleteResumeCommand, ErrorOr<Deleted>>
     {
         private readonly IResumeRepository _resumeRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -17,9 +18,9 @@ namespace Application.Resumes.Commands.DeleteResume
             _unitOfWork = unitOfWork;
         }
 
-        async Task<ErrorOr<DeleteResumePayload>> IRequestHandler<DeleteResumeCommand, ErrorOr<DeleteResumePayload>>.Handle(DeleteResumeCommand request, CancellationToken cancellationToken)
+        async Task<ErrorOr<Deleted>> IRequestHandler<DeleteResumeCommand, ErrorOr<Deleted>>.Handle(DeleteResumeCommand request, CancellationToken cancellationToken)
         {
-            var resume = await _resumeRepository.GetResumeByIdAsync(ResumeId.Create(request.Id));
+            var resume = await _resumeRepository.GetResumeByIdAsync(ResumeId.Create(Guid.Parse(request.Id)));
 
             if (resume is null)
             {
@@ -30,7 +31,7 @@ namespace Application.Resumes.Commands.DeleteResume
 
             await _unitOfWork.CommitChangesAsync();
 
-            return new DeleteResumePayload(true);
+            return Result.Deleted;
         }
     }
 }

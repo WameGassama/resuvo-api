@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Resumes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +12,7 @@ namespace Infrastructure.Persistence.Configurations
             ConfigureResumesTable(builder);
         }
 
-        private void ConfigureResumesTable(EntityTypeBuilder<Resume> builder)
+        private static void ConfigureResumesTable(EntityTypeBuilder<Resume> builder)
         {
             builder.ToTable("resumes");
 
@@ -20,10 +21,12 @@ namespace Infrastructure.Persistence.Configurations
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value,
                                value => ResumeId.Create(value));
-
             builder.Property(r => r.UserId)
                 .HasConversion(id => id.Value,
                                value => UserId.Create(value));
+            builder.Property(r => r.TemplateId)
+                .HasConversion(id => id.Value,
+                           value => TemplateId.Create(value));
         }
     }
 }

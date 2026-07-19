@@ -2,5 +2,17 @@
   "files.exclude": {
     "**/bin": true,
     "**/obj": true
-  }
+  },
+  "files.watcherExclude": {
+    "**/bin/**": true,
+    "**/obj/**": true
+  },
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  },
+  "breadcrumbs.enabled": false,
+  "editor.codeLens": false,
+  "editor.minimap.enabled": false,
+  "terminal.integrated.gpuAcceleration": "on"
 }

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Resumes.Commands.DeleteResume
 {
-    public record DeleteResumeCommand(Guid Id) : IRequest<ErrorOr<DeleteResumePayload>>;
+    public record DeleteResumeCommand(string Id) : IRequest<ErrorOr<Deleted>>;
 }
