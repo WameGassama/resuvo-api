@@ -19,10 +19,13 @@ namespace Application.Resumes.Commands.CreateResume
 
         public async Task<ErrorOr<Resume>> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
         {
+            var personalDetails = PersonalDetails.Create(null, null, null, null, null, null, null, null, null, null);
+
             var resume = Resume.Create(
                 UserId.Create(request.UserId),
                 request.Name,
                 TemplateId.Create(Guid.Parse(request.TemplateId)),
+                personalDetails,
                 DateTime.UtcNow,
                 DateTime.UtcNow
             );

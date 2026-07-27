@@ -30,6 +30,7 @@ public class DuplicateResumeCommandHandler : IRequestHandler<DuplicateResumeComm
             UserId.Create(request.UserId),
             resumeToBeDuplicated.Name,
             resumeToBeDuplicated.TemplateId,
+            resumeToBeDuplicated.PersonalDetails,
             DateTime.UtcNow,
             DateTime.UtcNow
         );

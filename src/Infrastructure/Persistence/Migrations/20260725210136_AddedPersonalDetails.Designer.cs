@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ResumeDBContext))]
-    partial class ResumeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260725210136_AddedPersonalDetails")]
+    partial class AddedPersonalDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,43 +60,43 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.Property<string>("Address")
                                 .HasColumnType("text")
-                                .HasColumnName("address");
+                                .HasColumnName("personal_details_address");
 
                             b1.Property<string>("City")
                                 .HasColumnType("text")
-                                .HasColumnName("city");
+                                .HasColumnName("personal_details_city");
 
                             b1.Property<string>("Country")
                                 .HasColumnType("text")
-                                .HasColumnName("country");
+                                .HasColumnName("personal_details_country");
 
                             b1.Property<string>("Email")
                                 .HasColumnType("text")
-                                .HasColumnName("email");
+                                .HasColumnName("personal_details_email");
 
                             b1.Property<string>("FirstName")
                                 .HasColumnType("text")
-                                .HasColumnName("first_name");
+                                .HasColumnName("personal_details_first_name");
 
-                            b1.Property<string>("JobTitle")
+                            b1.Property<string>("JobTitel")
                                 .HasColumnType("text")
-                                .HasColumnName("job_title");
+                                .HasColumnName("personal_details_job_titel");
 
                             b1.Property<string>("LastName")
                                 .HasColumnType("text")
-                                .HasColumnName("last_name");
+                                .HasColumnName("personal_details_last_name");
 
                             b1.Property<string>("Phone")
                                 .HasColumnType("text")
-                                .HasColumnName("phone");
+                                .HasColumnName("personal_details_phone");
 
                             b1.Property<string>("Photo")
                                 .HasColumnType("text")
-                                .HasColumnName("photo");
+                                .HasColumnName("personal_details_photo");
 
                             b1.Property<string>("PostalCode")
                                 .HasColumnType("text")
-                                .HasColumnName("postal_code");
+                                .HasColumnName("personal_details_postal_code");
                         });
 
                     b.HasKey("Id")
