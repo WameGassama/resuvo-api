@@ -31,7 +31,16 @@ namespace GraphQL.Queries
                 }
             }
 
-            return new Resume(result.Value.Id.Value.ToString(), result.Value.UserId.Value, result.Value.Name, result.Value.TemplateId.Value.ToString(), result.Value.CreatedAt, result.Value.UpdatedAt);
+            return new Resume(result.Value.Id.Value.ToString(), result.Value.UserId.Value, result.Value.Name, result.Value.TemplateId.Value.ToString(), new PersonalDetails(result.Value.PersonalDetails.JobTitle,
+                                                      result.Value.PersonalDetails.Photo,
+                                                      result.Value.PersonalDetails.FirstName,
+                                                      result.Value.PersonalDetails.LastName,
+                                                      result.Value.PersonalDetails.Email?.Value,
+                                                      result.Value.PersonalDetails.Phone,
+                                                      result.Value.PersonalDetails.Address,
+                                                      result.Value.PersonalDetails.PostalCode,
+                                                      result.Value.PersonalDetails.City,
+                                                      result.Value.PersonalDetails.Country), result.Value.CreatedAt, result.Value.UpdatedAt);
         }
 
         public static async Task<IReadOnlyList<Resume>> GetResumesAsync([GraphQLType(typeof(NonNullType<IdType>))] string userId, [Service] ISender sender)
@@ -40,7 +49,16 @@ namespace GraphQL.Queries
 
             var result = await sender.Send(query);
 
-            return result.Value.Select(resume => new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), resume.CreatedAt, resume.UpdatedAt)).ToList();
+            return result.Value.Select(resume => new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+                                                      resume.PersonalDetails.Photo,
+                                                      resume.PersonalDetails.FirstName,
+                                                      resume.PersonalDetails.LastName,
+                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Phone,
+                                                      resume.PersonalDetails.Address,
+                                                      resume.PersonalDetails.PostalCode,
+                                                      resume.PersonalDetails.City,
+                                                      resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)).ToList();
         }
     }
 }
