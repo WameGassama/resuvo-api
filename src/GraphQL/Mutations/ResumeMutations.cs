@@ -20,7 +20,12 @@ namespace GraphQL.Mutations
 
             var result = await sender.Send(input);
 
-            var payload = result.Then(resume => new CreateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), resume.CreatedAt, resume.UpdatedAt)));
+            var payload = result.Then(resume => new CreateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(
+                resume.PersonalDetails.JobTitle, resume.PersonalDetails.Photo,
+                resume.PersonalDetails.FirstName, resume.PersonalDetails.LastName,
+                resume.PersonalDetails.Email?.Value, resume.PersonalDetails.Phone,
+                resume.PersonalDetails.Address, resume.PersonalDetails.PostalCode,
+                resume.PersonalDetails.City, resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)));
 
             return MutationResult.From(payload);
         }
@@ -46,7 +51,16 @@ namespace GraphQL.Mutations
 
             var result = await sender.Send(input);
 
-            var payload = result.Then(resume => new DuplicateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), resume.CreatedAt, resume.UpdatedAt)));
+            var payload = result.Then(resume => new DuplicateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+                                                      resume.PersonalDetails.Photo,
+                                                      resume.PersonalDetails.FirstName,
+                                                      resume.PersonalDetails.LastName,
+                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Phone,
+                                                      resume.PersonalDetails.Address,
+                                                      resume.PersonalDetails.PostalCode,
+                                                      resume.PersonalDetails.City,
+                                                      resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)));
 
             return MutationResult.From(payload);
         }

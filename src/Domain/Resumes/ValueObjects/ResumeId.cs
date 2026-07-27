@@ -13,7 +13,6 @@ namespace Domain.Resumes.ValueObjects
 
         public static ResumeId Create(Guid value) => new(value);
 
-
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
