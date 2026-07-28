@@ -1,5 +1,8 @@
 using Application.Common.Interfaces;
+using Infrastructure.Authentication;
 using Infrastructure.Common.Persistence;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +17,7 @@ public static class DependencyInjection
         services.AddScoped<IResumeRepository, ResumeRepository>();
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ResumeDBContext>());
         services.AddDbContext<ResumeDBContext>(options => options.UseNpgsql(configuration.GetConnectionString("DbConnection")).UseSnakeCaseNamingConvention());
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddScheme<AuthenticationSchemeOptions, ClerkAuthenticationHandler>(JwtBearerDefaults.AuthenticationScheme, (o) => { });
 
         return services;
     }

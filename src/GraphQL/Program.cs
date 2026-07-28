@@ -1,14 +1,18 @@
 using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 
 builder.AddGraphQL()
-       .AddTypes()
-       .AddQueryConventions()
-       .AddMutationConventions(applyToAllMutations: true);
+    .AddAuthorization()
+    .AddTypes()
+    .AddQueryConventions()
+    .AddMutationConventions(applyToAllMutations: true);
+
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -22,6 +26,11 @@ app.UseCors(builder =>
        builder.AllowAnyMethod();
 });
 
-app.MapGraphQL();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapGraphQLHttp().RequireAuthorization();
+app.MapNitroApp();
 
 app.RunWithGraphQLCommands(args);

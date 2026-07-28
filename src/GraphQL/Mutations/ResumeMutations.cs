@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Application.Common.Errors;
 using Application.Resumes.Commands.CreateResume;
 using Application.Resumes.Commands.DeleteResume;
@@ -5,6 +6,7 @@ using Application.Resumes.Commands.DuplicateResume;
 using GraphQL.Common;
 using GraphQL.Contracts.Models;
 using GraphQL.Contracts.Payloads;
+using HotChocolate.Authorization;
 using MediatR;
 
 namespace GraphQL.Mutations
@@ -14,8 +16,11 @@ namespace GraphQL.Mutations
     {
         [Error<ValidationError>]
         [Error<NotFoundError>]
-        public static async Task<FieldResult<CreateResumePayload>> CreateResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string userId, string name, [GraphQLType(typeof(NonNullType<IdType>))] string templateId, [Service] ISender sender)
+        [Authorize]
+        public static async Task<FieldResult<CreateResumePayload>> CreateResumeAsync(ClaimsPrincipal claimsPrincipal, [GraphQLType(typeof(NonNullType<IdType>))] string name, [GraphQLType(typeof(NonNullType<IdType>))] string templateId, [Service] ISender sender)
         {
+            var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var input = new CreateResumeCommand(userId, name, templateId);
 
             var result = await sender.Send(input);
@@ -32,6 +37,7 @@ namespace GraphQL.Mutations
 
         [Error<ValidationError>]
         [Error<NotFoundError>]
+        [Authorize]
         public static async Task<FieldResult<DeleteResumePayload>> DeleteResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string resumeId, [Service] ISender sender)
         {
             var input = new DeleteResumeCommand(resumeId);
@@ -45,8 +51,11 @@ namespace GraphQL.Mutations
 
         [Error<ValidationError>]
         [Error<NotFoundError>]
-        public static async Task<FieldResult<DuplicateResumePayload>> DuplicateResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string resumeId, [GraphQLType(typeof(NonNullType<IdType>))] string userId, [Service] ISender sender)
+        // [Authorize]
+        public static async Task<FieldResult<DuplicateResumePayload>> DuplicateResumeAsync(ClaimsPrincipal claimsPrincipal, [GraphQLType(typeof(NonNullType<IdType>))] string resumeId, [GraphQLType(typeof(NonNullType<IdType>))][Service] ISender sender)
         {
+            var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var input = new DuplicateResumeCommand(resumeId, userId);
 
             var result = await sender.Send(input);
