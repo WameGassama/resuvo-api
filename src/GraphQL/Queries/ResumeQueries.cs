@@ -1,10 +1,12 @@
 using System.Runtime;
+using System.Security.Claims;
 using Application.Common.Errors;
 using Application.Resumes.Queries.GetResume;
 using Application.Resumes.Queries.GetResumes;
 using ErrorOr;
 using GraphQL.Common;
 using GraphQL.Contracts.Models;
+using HotChocolate.Authorization;
 using MediatR;
 
 namespace GraphQL.Queries
@@ -12,6 +14,7 @@ namespace GraphQL.Queries
     [QueryType]
     public static partial class ResumeQueries
     {
+        [Authorize]
         public static async Task<FieldResult<Resume, NotFoundError, ValidationError>> GetResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string id, [Service] ISender sender)
         {
             var query = new GetResumeQuery(id);
@@ -43,6 +46,7 @@ namespace GraphQL.Queries
                                                       result.Value.PersonalDetails.Country), result.Value.CreatedAt, result.Value.UpdatedAt);
         }
 
+        [Authorize]
         public static async Task<IReadOnlyList<Resume>> GetResumesAsync([GraphQLType(typeof(NonNullType<IdType>))] string userId, [Service] ISender sender)
         {
             var query = new GetResumesQuery(userId);
