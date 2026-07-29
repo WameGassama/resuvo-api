@@ -34,7 +34,7 @@ namespace GraphQL.Queries
                 }
             }
 
-            return new Resume(result.Value.Id.Value.ToString(), result.Value.UserId.Value, result.Value.Name, result.Value.TemplateId.Value.ToString(), new PersonalDetails(result.Value.PersonalDetails.JobTitle,
+            return new Resume(result.Value.Id.Value.ToString(), result.Value.UserId.Value, result.Value.Title, result.Value.TemplateId.Value.ToString(), new PersonalDetails(result.Value.PersonalDetails.JobTitle,
                                                       result.Value.PersonalDetails.Photo,
                                                       result.Value.PersonalDetails.FirstName,
                                                       result.Value.PersonalDetails.LastName,
@@ -55,7 +55,7 @@ namespace GraphQL.Queries
 
             var result = await sender.Send(query);
 
-            return result.Value.Select(resume => new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+            return result.Value.Select(resume => new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,

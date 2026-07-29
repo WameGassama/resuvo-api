@@ -42,7 +42,7 @@ namespace Infrastructure.Authentication
 
             var options = new AuthenticateRequestOptions(
             secretKey: secretKey,
-            authorizedParties: new[] { "https://learning-spaniel-88.accounts.dev" }
+            authorizedParties: new[] { "https://learning-spaniel-88.accounts.dev", "http://localhost:3000" }
         );
 
             RequestState requestState;

@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace Application.Resumes.Commands.RenameResume
+namespace Application.Resumes.Commands.RetitleResume
 {
-    public class RenameResumeCommandValidator : AbstractValidator<RenameResumeCommand>
+    public class RetitleResumeCommandValidator : AbstractValidator<RetitleResumeCommand>
     {
-        public RenameResumeCommandValidator()
+        public RetitleResumeCommandValidator()
         {
             RuleFor(x => x.ResumeId)
                     .Cascade(CascadeMode.Stop)
@@ -12,9 +12,9 @@ namespace Application.Resumes.Commands.RenameResume
                     .WithMessage("Resume ID cannot be empty.")
                     .Must(id => Guid.TryParse(id, out _))
                     .WithMessage("Resume ID must be a valid UUID.");
-            RuleFor(x => x.Name)
+            RuleFor(x => x.Title)
             .NotEmpty()
-            .WithMessage("Name cannot be empty.");
+            .WithMessage("Title cannot be empty.");
         }
     }
 }

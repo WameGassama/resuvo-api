@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Application.Resumes.Commands.CreateResume
 {
-    public record CreateResumeCommand(string UserId, string Name, string TemplateId) : IRequest<ErrorOr<Resume>>;
+    public record CreateResumeCommand(string UserId, string Title, string TemplateId) : IRequest<ErrorOr<Resume>>;
 }

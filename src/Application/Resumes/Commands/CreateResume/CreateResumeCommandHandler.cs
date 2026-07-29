@@ -23,7 +23,7 @@ namespace Application.Resumes.Commands.CreateResume
 
             var resume = Resume.Create(
                 UserId.Create(request.UserId),
-                request.Name,
+                request.Title,
                 TemplateId.Create(Guid.Parse(request.TemplateId)),
                 personalDetails,
                 DateTime.UtcNow,

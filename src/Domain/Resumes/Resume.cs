@@ -6,7 +6,7 @@ namespace Domain
     public class Resume : AggregateRoot<ResumeId>
     {
         public UserId UserId { get; private set; }
-        public string Name { get; private set; } = string.Empty;
+        public string Title { get; private set; } = string.Empty;
         public TemplateId TemplateId { get; private set; }
         public PersonalDetails PersonalDetails { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -15,14 +15,14 @@ namespace Domain
         private Resume(
             ResumeId resumeId,
             UserId userId,
-            string name,
+            string title,
             TemplateId templateId,
             PersonalDetails personalDetails,
             DateTime createdAt,
             DateTime updatedAt) : base(resumeId)
         {
             UserId = userId;
-            Name = name;
+            Title = title;
             TemplateId = templateId;
             PersonalDetails = personalDetails;
             CreatedAt = createdAt;
@@ -30,18 +30,18 @@ namespace Domain
         }
 
         public static Resume Create(UserId userId,
-            string name,
+            string title,
             TemplateId templateId,
             PersonalDetails personalDetails,
             DateTime createdAt,
             DateTime updatedAt)
         {
-            return new(ResumeId.CreateUnique(), userId, name, templateId, personalDetails, createdAt, updatedAt);
+            return new(ResumeId.CreateUnique(), userId, title, templateId, personalDetails, createdAt, updatedAt);
         }
 
-        public void Rename(string name)
+        public void Retitle(string title)
         {
-            Name = name;
+            Title = title;
             UpdatedAt = DateTime.UtcNow;
         }
 

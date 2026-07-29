@@ -28,7 +28,7 @@ public class DuplicateResumeCommandHandler : IRequestHandler<DuplicateResumeComm
 
         var resume = Resume.Create(
             UserId.Create(request.UserId),
-            resumeToBeDuplicated.Name,
+            resumeToBeDuplicated.Title,
             resumeToBeDuplicated.TemplateId,
             resumeToBeDuplicated.PersonalDetails,
             DateTime.UtcNow,
