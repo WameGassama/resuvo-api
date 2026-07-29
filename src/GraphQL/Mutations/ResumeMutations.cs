@@ -3,7 +3,7 @@ using Application.Common.Errors;
 using Application.Resumes.Commands.CreateResume;
 using Application.Resumes.Commands.DeleteResume;
 using Application.Resumes.Commands.DuplicateResume;
-using Application.Resumes.Commands.RenameResume;
+using Application.Resumes.Commands.RetitleResume;
 using Application.Resumes.Commands.UpdatePersonalDetails;
 using GraphQL.Common;
 using GraphQL.Contracts.Models;
@@ -19,15 +19,15 @@ namespace GraphQL.Mutations
         [Error<ValidationError>]
         [Error<NotFoundError>]
         [Authorize]
-        public static async Task<FieldResult<CreateResumePayload>> CreateResumeAsync(ClaimsPrincipal claimsPrincipal, [GraphQLType(typeof(NonNullType<IdType>))] string name, [GraphQLType(typeof(NonNullType<IdType>))] string templateId, [Service] ISender sender)
+        public static async Task<FieldResult<CreateResumePayload>> CreateResumeAsync(ClaimsPrincipal claimsPrincipal, string title, [GraphQLType(typeof(NonNullType<IdType>))] string templateId, [Service] ISender sender)
         {
             var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var input = new CreateResumeCommand(userId, name, templateId);
+            var input = new CreateResumeCommand(userId, title, templateId);
 
             var result = await sender.Send(input);
 
-            var payload = result.Then(resume => new CreateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(
+            var payload = result.Then(resume => new CreateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(
                 resume.PersonalDetails.JobTitle, resume.PersonalDetails.Photo,
                 resume.PersonalDetails.FirstName, resume.PersonalDetails.LastName,
                 resume.PersonalDetails.Email?.Value, resume.PersonalDetails.Phone,
@@ -62,7 +62,7 @@ namespace GraphQL.Mutations
 
             var result = await sender.Send(input);
 
-            var payload = result.Then(resume => new DuplicateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+            var payload = result.Then(resume => new DuplicateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
@@ -79,13 +79,13 @@ namespace GraphQL.Mutations
         [Error<ValidationError>]
         [Error<NotFoundError>]
         [Authorize]
-        public static async Task<FieldResult<RenameResumePayload>> RenameResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string resumeId, string name, [Service] ISender sender)
+        public static async Task<FieldResult<RetitleResumePayload>> RetitleResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string resumeId, string title, [Service] ISender sender)
         {
-            var input = new RenameResumeCommand(resumeId, name);
+            var input = new RetitleResumeCommand(resumeId, title);
 
             var result = await sender.Send(input);
 
-            var payload = result.Then(resume => new RenameResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+            var payload = result.Then(resume => new RetitleResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
@@ -120,7 +120,7 @@ namespace GraphQL.Mutations
 
             var result = await sender.Send(input);
 
-            var payload = result.Then(resume => new UpdatePersonalDetailsPayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+            var payload = result.Then(resume => new UpdatePersonalDetailsPayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
