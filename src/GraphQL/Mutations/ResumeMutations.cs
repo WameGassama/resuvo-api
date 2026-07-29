@@ -3,6 +3,8 @@ using Application.Common.Errors;
 using Application.Resumes.Commands.CreateResume;
 using Application.Resumes.Commands.DeleteResume;
 using Application.Resumes.Commands.DuplicateResume;
+using Application.Resumes.Commands.RenameResume;
+using Application.Resumes.Commands.UpdatePersonalDetails;
 using GraphQL.Common;
 using GraphQL.Contracts.Models;
 using GraphQL.Contracts.Payloads;
@@ -51,8 +53,8 @@ namespace GraphQL.Mutations
 
         [Error<ValidationError>]
         [Error<NotFoundError>]
-        // [Authorize]
-        public static async Task<FieldResult<DuplicateResumePayload>> DuplicateResumeAsync(ClaimsPrincipal claimsPrincipal, [GraphQLType(typeof(NonNullType<IdType>))] string resumeId, [GraphQLType(typeof(NonNullType<IdType>))][Service] ISender sender)
+        [Authorize]
+        public static async Task<FieldResult<DuplicateResumePayload>> DuplicateResumeAsync(ClaimsPrincipal claimsPrincipal, [GraphQLType(typeof(NonNullType<IdType>))] string resumeId, [Service] ISender sender)
         {
             var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -61,6 +63,64 @@ namespace GraphQL.Mutations
             var result = await sender.Send(input);
 
             var payload = result.Then(resume => new DuplicateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+                                                      resume.PersonalDetails.Photo,
+                                                      resume.PersonalDetails.FirstName,
+                                                      resume.PersonalDetails.LastName,
+                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Phone,
+                                                      resume.PersonalDetails.Address,
+                                                      resume.PersonalDetails.PostalCode,
+                                                      resume.PersonalDetails.City,
+                                                      resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)));
+
+            return MutationResult.From(payload);
+        }
+
+        [Error<ValidationError>]
+        [Error<NotFoundError>]
+        [Authorize]
+        public static async Task<FieldResult<RenameResumePayload>> RenameResumeAsync([GraphQLType(typeof(NonNullType<IdType>))] string resumeId, string name, [Service] ISender sender)
+        {
+            var input = new RenameResumeCommand(resumeId, name);
+
+            var result = await sender.Send(input);
+
+            var payload = result.Then(resume => new RenameResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+                                                      resume.PersonalDetails.Photo,
+                                                      resume.PersonalDetails.FirstName,
+                                                      resume.PersonalDetails.LastName,
+                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Phone,
+                                                      resume.PersonalDetails.Address,
+                                                      resume.PersonalDetails.PostalCode,
+                                                      resume.PersonalDetails.City,
+                                                      resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)));
+
+            return MutationResult.From(payload);
+        }
+
+        [Error<ValidationError>]
+        [Error<NotFoundError>]
+        [Authorize]
+        public static async Task<FieldResult<UpdatePersonalDetailsPayload>> UpdatePersonalDetailsAsync(
+            [GraphQLType(typeof(NonNullType<IdType>))] string resumeId,
+            string? jobTitle,
+            string? photo,
+            string? firstName,
+            string? lastName,
+            string? email,
+            string? phone,
+            string? address,
+            string? postalCode,
+            string? city,
+            string? country,
+            [Service] ISender sender)
+        {
+            var input = new UpdatePersonalDetailsCommand(resumeId, jobTitle, photo, firstName, lastName, email, phone, address, postalCode, city, country);
+
+            var result = await sender.Send(input);
+
+            var payload = result.Then(resume => new UpdatePersonalDetailsPayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Name, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,

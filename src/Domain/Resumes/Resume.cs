@@ -39,6 +39,18 @@ namespace Domain
             return new(ResumeId.CreateUnique(), userId, name, templateId, personalDetails, createdAt, updatedAt);
         }
 
+        public void Rename(string name)
+        {
+            Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdatePersonalDetails(PersonalDetails personalDetails)
+        {
+            PersonalDetails = personalDetails;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         private Resume()
         {
 

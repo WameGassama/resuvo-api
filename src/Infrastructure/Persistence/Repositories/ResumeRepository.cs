@@ -38,4 +38,11 @@ public class ResumeRepository : IResumeRepository
 
         return result;
     }
+
+    public Task UpdateAsync(Resume resume)
+    {
+        _dBContext.Update(resume);
+
+        return Task.CompletedTask;
+    }
 }
