@@ -47,8 +47,10 @@ namespace GraphQL.Queries
         }
 
         [Authorize]
-        public static async Task<IReadOnlyList<Resume>> GetResumesAsync([GraphQLType(typeof(NonNullType<IdType>))] string userId, [Service] ISender sender)
+        public static async Task<IReadOnlyList<Resume>> GetResumesAsync(ClaimsPrincipal claimsPrincipal, [Service] ISender sender)
         {
+            var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var query = new GetResumesQuery(userId);
 
             var result = await sender.Send(query);
