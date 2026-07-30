@@ -30,7 +30,7 @@ namespace GraphQL.Mutations
             var payload = result.Then(resume => new CreateResumePayload(new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(
                 resume.PersonalDetails.JobTitle, resume.PersonalDetails.Photo,
                 resume.PersonalDetails.FirstName, resume.PersonalDetails.LastName,
-                resume.PersonalDetails.Email?.Value, resume.PersonalDetails.Phone,
+                resume.PersonalDetails.Email.Value, resume.PersonalDetails.Phone,
                 resume.PersonalDetails.Address, resume.PersonalDetails.PostalCode,
                 resume.PersonalDetails.City, resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)));
 
@@ -66,7 +66,7 @@ namespace GraphQL.Mutations
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
-                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Email.Value,
                                                       resume.PersonalDetails.Phone,
                                                       resume.PersonalDetails.Address,
                                                       resume.PersonalDetails.PostalCode,
@@ -89,7 +89,7 @@ namespace GraphQL.Mutations
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
-                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Email.Value,
                                                       resume.PersonalDetails.Phone,
                                                       resume.PersonalDetails.Address,
                                                       resume.PersonalDetails.PostalCode,
@@ -124,7 +124,7 @@ namespace GraphQL.Mutations
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
-                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Email.Value,
                                                       resume.PersonalDetails.Phone,
                                                       resume.PersonalDetails.Address,
                                                       resume.PersonalDetails.PostalCode,

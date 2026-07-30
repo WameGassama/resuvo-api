@@ -2,14 +2,14 @@ namespace Domain.Resumes.ValueObjects
 {
     public class Email : ValueObject
     {
-        public string? Value { get; private set; }
+        public string Value { get; private set; }
 
-        private Email(string? value)
+        private Email(string value)
         {
             Value = value;
         }
 
-        public static Email Create(string? value) => new(value);
+        public static Email Create(string value) => new(value);
 
         protected override IEnumerable<object?> GetEqualityComponents()
         {

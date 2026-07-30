@@ -19,7 +19,7 @@ namespace Application.Resumes.Commands.CreateResume
 
         public async Task<ErrorOr<Resume>> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
         {
-            var personalDetails = PersonalDetails.Create(null, null, null, null, null, null, null, null, null, null);
+            var personalDetails = PersonalDetails.Create("", "", "", "", Email.Create(""), "", "", "", "", "");
 
             var resume = Resume.Create(
                 UserId.Create(request.UserId),
