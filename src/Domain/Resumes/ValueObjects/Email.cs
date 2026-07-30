@@ -1,29 +1,19 @@
-using System.Text.RegularExpressions;
-using Throw;
-
-public partial class Email : ValueObject
+namespace Domain.Resumes.ValueObjects
 {
-    public string? Value { get; private set; }
-
-    private Email(string? value)
+    public class Email : ValueObject
     {
-        if (value is null)
+        public string? Value { get; private set; }
+
+        private Email(string? value)
         {
-            Value = null;
+            Value = value;
         }
-        else
+
+        public static Email Create(string? value) => new(value);
+
+        protected override IEnumerable<object?> GetEqualityComponents()
         {
-            Value = value.Throw("Email address is not valid!").IfNotMatches(MyRegex());
+            yield return Value;
         }
-    }
-
-    public static Email Create(string? value) => new(value);
-
-    [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
-    private static partial Regex MyRegex();
-
-    protected override IEnumerable<object?> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }
