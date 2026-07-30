@@ -6,27 +6,27 @@ namespace Domain.Resumes.ValueObjects
 {
     public sealed class PersonalDetails : ValueObject
     {
-        public string? JobTitle { get; private set; }
-        public string? Photo { get; private set; }
-        public string? FirstName { get; private set; }
-        public string? LastName { get; private set; }
-        public Email? Email { get; private set; }
-        public string? Phone { get; private set; }
-        public string? Address { get; private set; }
-        public string? PostalCode { get; private set; }
-        public string? City { get; private set; }
-        public string? Country { get; private set; }
+        public string JobTitle { get; private set; }
+        public string Photo { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public Email Email { get; private set; }
+        public string Phone { get; private set; }
+        public string Address { get; private set; }
+        public string PostalCode { get; private set; }
+        public string City { get; private set; }
+        public string Country { get; private set; }
 
-        private PersonalDetails(string? jobTitle,
-                                string? photo,
-                                string? firstName,
-                                string? lastName,
-                                Email? email,
-                                string? phone,
-                                string? address,
-                                string? postalCode,
-                                string? city,
-                                string? country)
+        private PersonalDetails(string jobTitle,
+                                string photo,
+                                string firstName,
+                                string lastName,
+                                Email email,
+                                string phone,
+                                string address,
+                                string postalCode,
+                                string city,
+                                string country)
         {
             JobTitle = jobTitle;
             Photo = photo;
@@ -40,16 +40,16 @@ namespace Domain.Resumes.ValueObjects
             Country = country;
         }
 
-        public static PersonalDetails Create(string? jobTitle,
-                                             string? photo,
-                                             string? firstName,
-                                             string? lastName,
-                                             Email? email,
-                                             string? phone,
-                                             string? address,
-                                             string? postalCode,
-                                             string? city,
-                                             string? country)
+        public static PersonalDetails Create(string jobTitle,
+                                             string photo,
+                                             string firstName,
+                                             string lastName,
+                                             Email email,
+                                             string phone,
+                                             string address,
+                                             string postalCode,
+                                             string city,
+                                             string country)
         {
 
             return new(jobTitle,

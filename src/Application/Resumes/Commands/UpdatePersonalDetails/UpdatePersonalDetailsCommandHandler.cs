@@ -29,16 +29,16 @@ namespace Application.Resumes.Commands.UpdatePersonalDetails
             var currentDetails = resume.PersonalDetails;
 
             var personalDetails = PersonalDetails.Create(
-                request.JobTitle == "" ? null : request.JobTitle ?? currentDetails.JobTitle,
-                request.Photo == "" ? null : request.Photo ?? currentDetails.Photo,
-                request.FirstName == "" ? null : request.FirstName ?? currentDetails.FirstName,
-                request.LastName == "" ? null : request.LastName ?? currentDetails.LastName,
-                Email.Create(request.Email == "" ? null : request.Email ?? currentDetails.Email?.Value),
-                request.Phone == "" ? null : request.Phone ?? currentDetails.Phone,
-                request.Address == "" ? null : request.Address ?? currentDetails.Address,
-                request.PostalCode == "" ? null : request.PostalCode ?? currentDetails.PostalCode,
-                request.City == "" ? null : request.City ?? currentDetails.City,
-                request.Country == "" ? null : request.Country ?? currentDetails.Country);
+                request.JobTitle ?? currentDetails.JobTitle,
+                request.Photo ?? currentDetails.Photo,
+                request.FirstName ?? currentDetails.FirstName,
+                request.LastName ?? currentDetails.LastName,
+                Email.Create(request.Email ?? currentDetails.Email.Value),
+                request.Phone ?? currentDetails.Phone,
+                request.Address ?? currentDetails.Address,
+                request.PostalCode ?? currentDetails.PostalCode,
+                request.City ?? currentDetails.City,
+                request.Country ?? currentDetails.Country);
 
             resume.UpdatePersonalDetails(personalDetails);
 

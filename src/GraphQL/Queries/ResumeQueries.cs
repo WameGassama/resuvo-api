@@ -1,10 +1,8 @@
-using System.Runtime;
 using System.Security.Claims;
 using Application.Common.Errors;
 using Application.Resumes.Queries.GetResume;
 using Application.Resumes.Queries.GetResumes;
 using ErrorOr;
-using GraphQL.Common;
 using GraphQL.Contracts.Models;
 using HotChocolate.Authorization;
 using MediatR;
@@ -38,7 +36,7 @@ namespace GraphQL.Queries
                                                       result.Value.PersonalDetails.Photo,
                                                       result.Value.PersonalDetails.FirstName,
                                                       result.Value.PersonalDetails.LastName,
-                                                      result.Value.PersonalDetails.Email?.Value,
+                                                      result.Value.PersonalDetails.Email.Value,
                                                       result.Value.PersonalDetails.Phone,
                                                       result.Value.PersonalDetails.Address,
                                                       result.Value.PersonalDetails.PostalCode,
@@ -55,16 +53,16 @@ namespace GraphQL.Queries
 
             var result = await sender.Send(query);
 
-            return result.Value.Select(resume => new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
+            return [.. result.Value.Select(resume => new Resume(resume.Id.Value.ToString(), resume.UserId.Value, resume.Title, resume.TemplateId.Value.ToString(), new PersonalDetails(resume.PersonalDetails.JobTitle,
                                                       resume.PersonalDetails.Photo,
                                                       resume.PersonalDetails.FirstName,
                                                       resume.PersonalDetails.LastName,
-                                                      resume.PersonalDetails.Email?.Value,
+                                                      resume.PersonalDetails.Email.Value,
                                                       resume.PersonalDetails.Phone,
                                                       resume.PersonalDetails.Address,
                                                       resume.PersonalDetails.PostalCode,
                                                       resume.PersonalDetails.City,
-                                                      resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt)).ToList();
+                                                      resume.PersonalDetails.Country), resume.CreatedAt, resume.UpdatedAt))];
         }
     }
 }
